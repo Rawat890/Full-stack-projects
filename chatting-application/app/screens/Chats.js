@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 
-import { AntDesign, Entypo, MaterialIcons } from '@expo/vector-icons';
+import { AntDesign, Entypo, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
@@ -38,7 +38,6 @@ const Chats = () => {
     try {
       await AsyncStorage.removeItem('authToken');
       setToken('');
-      replace("Auth", {screen: SCREENS.Login})
     } catch (error) {
       console.log('Error', error);
     }
@@ -69,18 +68,19 @@ const Chats = () => {
   const getrequests = async () => {
     try {
       const response = await axios.get(
-        `http://10.206.64.208:6000/getrequests/${userId}`,
+        `http://192.168.29.24:6000/getrequests/${userId}`,
       );
 
       setRequests(response.data);
+      console.log("Requests - ", response)
     } catch (error) {
       console.log('error', error);
     }
   };
-  console.log(requests);
+
   const acceptRequest = async requestId => {
     try {
-      const response = await axios.post('http://10.206.64.208:6000/acceptrequest', {
+      const response = await axios.post('http://192.168.29.24:6000/acceptrequest', {
         userId: userId,
         requestId: requestId,
       });
@@ -94,7 +94,7 @@ const Chats = () => {
   };
   const getUser = async () => {
     try {
-      const response = await axios.get(`http://10.206.64.208:6000/user/${userId}`);
+      const response = await axios.get(`http://192.168.29.24:6000/user/${userId}`);
       setChats(response.data);
     } catch (error) {
       console.log('Error fetching user', error);
@@ -108,14 +108,8 @@ const Chats = () => {
       <View
         style={styles.container}>
         <Pressable onPress={logout}>
-          <Image
-            style={{ width: 30, height: 30, borderRadius: 15 }}
-            source={{
-              uri: 'https://lh3.googleusercontent.com/ogw/AF2bZyi09EC0vkA0pKVqrtBq0Y-SLxZc0ynGmNrVKjvV66i3Yg=s64-c-mo',
-            }}
-          />
+          <SimpleLineIcons name="logout" size={24} color="black" />
         </Pressable>
-
         <Text style={styles.chatText}>Chats</Text>
 
         <View>
@@ -157,7 +151,7 @@ const Chats = () => {
                     No Chats yet
                   </Text>
                   <Text style={{ marginTop: 4, color: 'gray' }}>
-                    Get started by nessaging a friend
+                    Get started by messaging a friend
                   </Text>
                 </View>
               </View>
@@ -187,7 +181,7 @@ const Chats = () => {
                     <Pressable>
                       <Image
                         source={{ uri: item?.from?.image }}
-                        style={{ width: 40, height: 40, borderRadius: 20 }}
+                        style={{ width: 40, height: 40, borderRadius: 20 ,resizeMode: 'contain'}}
                       />
                     </Pressable>
 
