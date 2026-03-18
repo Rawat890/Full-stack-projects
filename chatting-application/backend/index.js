@@ -70,20 +70,47 @@ app.get("/users/:userId", async (req, res) => {
 })
 
 app.post("/sendrequest", async (req, res) => {
-  const { senderId, receiverId, message } = req.body;
-  const receiver = await User.findById(receiverId);
-  if (!receiver) {
-    return res.status(404).json({ message: "Receiver not found" })
+  try {
+    const { senderId, receiverId, message } = req.body;
+    if (senderId === receiverId) {
+      return res.status(400).json({ message: "Cannot send request to yourself" });
+    }
+    const receiver = await User.findById(receiverId);
+
+    if (!receiver) {
+      return res.status(404).json({ message: "Receiver not found" });
+    }
+
+    if (receiver.friends.includes(senderId)) {
+      return res.status(400).json({ message: "Already friends" });
+    }
+
+    const requestExists = receiver.requests.some(
+      (req) => req.from.toString() === senderId
+    );
+
+    if (requestExists) {
+      return res.status(400).json({ message: "Request already sent" });
+    }
+
+    receiver.requests.push({
+      from: senderId,
+      message: message || "Sent you a friend request"
+    });
+
+    await receiver.save();
+    res.status(200).json({ message: "Request sent successfully." });
+
+  } catch (error) {
+    console.log("Send request error", error);
+    res.status(500).json({ message: "Server error" });
   }
-  receiver.requests.push({ from: senderId, message });
-  await receiver.save();
-  res.status(200).json({ message: "Request sent successfully." })
-})
+});
 
 app.get("/getrequests/:userId", async (req, res) => {
   try {
     const userId = req.params.userId;
-    const user = await User.findById(userId).populate("requests.from", "name email");
+    const user = await User.findById(userId).populate("requests.from", "name email image");
     if (user) {
       res.json(user.requests)
     } else {
@@ -124,7 +151,7 @@ app.post("/acceptrequest", async (req, res) => {
       return res.status(404).json({ message: "Friend not found" })
     }
 
-    res.status(200).json({message: "Request accepted successfully"})
+    res.status(200).json({ message: "Request accepted successfully" })
   } catch (error) {
     console.log("Accept request api error - ", error);
     res.status(500).json({ message: "Server error" })
