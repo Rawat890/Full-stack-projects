@@ -1,0 +1,16 @@
+{
+  "name": "gms_fitness_application",
+  "displayName": "GMS Fitness",
+  "orientation": "portrait",
+  "extra": {
+    "eas": {
+      "projectId": "ade9398c-096c-4c4e-b041-7a4bae0017c6"
+    }
+  },
+  "runtimeVersion": "1.0.0",
+  "updates": {
+    "url": "https://u.expo.dev/ade9398c-096c-4c4e-b041-7a4bae0017c6"
+  },
+  "android": {},
+  "ios": {}
+}
