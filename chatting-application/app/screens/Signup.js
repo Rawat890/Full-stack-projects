@@ -1,50 +1,61 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { useContext, useState } from 'react';
-import { Alert, Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useContext } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Alert, Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { scale } from 'react-native-size-matters';
+
 import ButtonWithLabel from '../components/ButtonWithLabel';
 import InputWithLabel from '../components/InputWithLabel';
 import { AuthContext } from '../context/AuthContext';
-import { COLORS } from '../utils/colors';
 import { navigate, replace } from '../utils/navigationService';
 import { SCREENS } from '../utils/routes';
+import { signupSchema } from '../utils/schemas/signupSchema';
 
 export default function SignUp() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [image, setImage] = useState("");
-  const [name, setName] = useState("");
-  const { token, setToken } = useContext(AuthContext);
+  const { setToken } = useContext(AuthContext);
+
+  const {
+    control,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors }
+  } = useForm({
+    resolver: yupResolver(signupSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      password: '',
+      image: ''
+    }
+  });
+
+  const image = watch('image');
 
   const navigateToSignUp = () => {
-    navigate(SCREENS.Login)
-  }
+    navigate(SCREENS.Login);
+  };
 
-  const handleRegisteration = () => {
-    const user = {
-      name: name,
-      email: email,
-      password: password,
-      image: image
-    }
-    axios.post("http://10.206.64.208:6000/register", user).then((response) => {
-      console.log(response)
-      Alert.alert("Registration successful !!")
+  const onSubmit = async (data: any) => {
+    try {
+      const response = await axios.post("http://10.114.23.208:6000/register", data);
+
       const token = response.data.token;
-      AsyncStorage.setItem("authToken", token)
+      await AsyncStorage.setItem("authToken", token);
       setToken(token);
-      setName('')
-      setEmail('')
-      setPassword('')
-      setImage('')
-      replace("App", { screen: SCREENS.Chats })
-    }).catch((error) => {
-      Alert.alert("An error occurred while registering.")
-      console.log(error)
-    })
-  }
+
+      Alert.alert("Registration successful !!");
+
+      reset();
+
+      replace("App", { screen: SCREENS.Chats });
+    } catch (error) {
+      Alert.alert("An error occurred while registering.");
+      console.log(error);
+    }
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -75,33 +86,64 @@ export default function SignUp() {
               <Text style={styles.addText}>Add</Text>
             </Pressable>
 
-            <InputWithLabel
-              label="Email"
-              value={email}
-              placeholder="Enter email"
-              onChangeText={setEmail}
+            <Controller
+              control={control}
+              name="email"
+              render={({ field: { onChange, value } }) => (
+                <InputWithLabel
+                  label="Email"
+                  value={value}
+                  placeholder="Enter email"
+                  onChangeText={onChange}
+                  secureTextEntry={false}
+                  error={errors.email?.message}
+                />
+              )}
             />
 
-            <InputWithLabel
-              label="Name"
-              value={name}
-              placeholder="Enter name"
-              onChangeText={setName}
+            <Controller
+              control={control}
+              name="name"
+              render={({ field: { onChange, value } }) => (
+                <InputWithLabel
+                  label="Name"
+                  value={value}
+                  placeholder="Enter name"
+                  onChangeText={onChange}
+                  secureTextEntry={false}
+                  error={errors.name?.message}
+                />
+              )}
             />
 
-            <InputWithLabel
-              label="Password"
-              value={password}
-              placeholder="Enter password"
-              onChangeText={setPassword}
-              secureTextEntry
+            <Controller
+              control={control}
+              name="password"
+              render={({ field: { onChange, value } }) => (
+                <InputWithLabel
+                  label="Password"
+                  value={value}
+                  placeholder="Enter password"
+                  onChangeText={onChange}
+                  secureTextEntry={true}
+                  error={errors.password?.message}
+                />
+              )}
             />
 
-            <InputWithLabel
-              label="Image"
-              value={image}
-              placeholder="Enter image url"
-              onChangeText={setImage}
+            <Controller
+              control={control}
+              name="image"
+              render={({ field: { onChange, value } }) => (
+                <InputWithLabel
+                  label="Image"
+                  value={value}
+                  placeholder="Enter image url"
+                  onChangeText={onChange}
+                  secureTextEntry={false}
+                  error={errors.image?.message}
+                />
+              )}
             />
 
             <View style={styles.forgotPasswordView}>
@@ -111,7 +153,7 @@ export default function SignUp() {
             <View style={styles.buttonContainer}>
               <ButtonWithLabel
                 title="Create my account"
-                onPress={handleRegisteration}
+                onPress={handleSubmit(onSubmit)}
               />
 
               <View style={styles.alreadyHaveAccount}>
