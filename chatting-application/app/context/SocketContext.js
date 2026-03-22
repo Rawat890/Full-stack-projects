@@ -9,7 +9,7 @@ export const useSocketContext = () => {
   return useContext(SocketContext)
 }
 
-export const SocketContextProvider = ({ children }) => {
+const SocketContextProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
   const [authUser, userId] = useContext(AuthContext);
 
@@ -37,3 +37,5 @@ export const SocketContextProvider = ({ children }) => {
   )
 
 }
+
+export { SocketContext, SocketContextProvider };
