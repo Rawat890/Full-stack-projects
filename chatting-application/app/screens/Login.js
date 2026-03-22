@@ -1,6 +1,8 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { Alert, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { scale } from 'react-native-size-matters';
@@ -10,12 +12,19 @@ import { AuthContext } from '../context/AuthContext';
 import { COLORS } from '../utils/colors';
 import { replace } from '../utils/navigationService';
 import { SCREENS } from '../utils/routes';
-
+import { loginSchema } from '../utils/schemas/loginSchema';
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { token, setToken } = useContext(AuthContext);
 
+  const {control, handleSubmit, formState: {errors}} = useForm({
+    resolver: yupResolver(loginSchema),
+    defaultValues :{
+      email: '',
+      password: ''
+    }
+  })
   useEffect(() => {
     if (token) {
       replace("App", { screen: SCREENS.Chats })
@@ -26,12 +35,12 @@ export default function Login() {
     replace(SCREENS.Register);
   };
 
-  const handleLogin = async () => {
+  const onSubmit = async () => {
     const user = {
       email: email,
       password: password
     }
-    axios.post("http://10.206.64.208:6000/login", user).then(async (response) => {
+    axios.post("http://10.114.23.208:6000/login", user).then(async (response) => {
       console.log("Backend response - ", response);
       const token = response.data.token;
       await AsyncStorage.setItem("authToken", token)
@@ -58,25 +67,39 @@ return (
             Login to Your Account
           </Text>
 
-          <InputWithLabel
-            label="Email"
-            value={email}
-            placeholder="Enter email"
-            onChangeText={setEmail}
+          <Controller
+            control={control}
+            name='email'
+            render={({ field: { onChange, value } }) => (
+              <InputWithLabel
+                label="Email"
+                value={email}
+                placeholder="Enter email"
+                onChangeText={setEmail}
+              />
+            )}
           />
 
-          <InputWithLabel
-            label="Password"
-            value={password}
-            placeholder="Enter password"
-            onChangeText={setPassword}
-            secureTextEntry
+          <Controller
+            control={control}
+            name="password"
+            render={({ field: { onChange, value } }) => (
+              <InputWithLabel
+                label="Password"
+                value={value}
+                placeholder="Enter password"
+                onChangeText={onChange}
+                secureTextEntry={true}
+                error={errors.password?.message}
+              />
+            )}
           />
+
 
           <Text style={styles.forgotPassword}>Forgot Password</Text>
 
           <View style={styles.buttonContainer}>
-            <ButtonWithLabel title="Login" onPress={handleLogin} />
+            <ButtonWithLabel title="Login" onPress={handleSubmit(onSubmit)} />
 
             <View style={styles.doNotHaveAccount}>
               <Text style={styles.doNotHaveAccountText}>
