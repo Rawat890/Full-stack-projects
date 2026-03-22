@@ -157,3 +157,22 @@ app.post("/acceptrequest", async (req, res) => {
     res.status(500).json({ message: "Server error" })
   }
 })
+
+app.get('/user/:userId', async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    const users = await User.findById(userId).populate(
+      'friends',
+      'name email image',
+    );
+
+    res.json(users.friends);
+  } catch (error) {
+    console.log('Error fetching user', error);
+  }
+});
+
+
+const http = require('http').createServer(app);
+const io = require("socket.io")(http);
