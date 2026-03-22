@@ -14,10 +14,10 @@ import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { scale } from 'react-native-size-matters';
+import ChatMessages from '../components/ChatMessages';
 import { AuthContext } from '../context/AuthContext';
 import { navigate } from '../utils/navigationService';
 import { SCREENS } from '../utils/routes';
-import Chat from './ChatRoom';
 
 const Chats = () => {
   const [options, setOptions] = useState(['Chats']);
@@ -140,7 +140,7 @@ const Chats = () => {
             (chats?.length > 0 ? (
               <View>
                 {chats?.map((item, index) => (
-                  <Chat item={item} key={item?._id} />
+                  <ChatMessages item={item} key={item?._id} />
                 ))}
               </View>
             ) : (
