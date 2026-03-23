@@ -38,7 +38,7 @@ export default function RequestChatRoom() {
         receiverId: receiverId,
         message: message
       }
-      const response = await axios.post("http://10.206.64.208:6000/sendRequest", userData);
+      const response = await axios.post("http://10.12.178.201:6000/sendRequest", userData);
       console.log("Response - ", response)
       if(response.status === 200){
         setMessage("")
@@ -58,7 +58,6 @@ return (
     >
       <View style={{ flex: 1 }}>
 
-        {/* Messages */}
         <ScrollView
           style={{ flex: 1 }}
           contentContainerStyle={{ padding: 10 }}
@@ -66,7 +65,6 @@ return (
         >
         </ScrollView>
 
-        {/* Message Input */}
         <View style={styles.inputContainer}>
           <Entypo name="emoji-happy" size={24} />
 

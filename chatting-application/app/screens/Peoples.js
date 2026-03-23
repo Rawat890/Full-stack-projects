@@ -16,7 +16,7 @@ export default function Peoples() {
 
   const fecthUsers = async () => {
     try {
-      const response = await fetch(`http://10.206.64.208:6000/users/${userId}`);
+      const response = await fetch(`http://10.12.178.201:6000/users/${userId}`);
       const data = await response.json();
       setUsers(data);
       console.log("Fetched Users - ", data)

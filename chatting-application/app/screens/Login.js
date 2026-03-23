@@ -40,7 +40,7 @@ export default function Login() {
       email: email,
       password: password
     }
-    axios.post("http://10.114.23.208:6000/login", user).then(async (response) => {
+    axios.post("http://10.12.178.201:6000/login", user).then(async (response) => {
       console.log("Backend response - ", response);
       const token = response.data.token;
       await AsyncStorage.setItem("authToken", token)

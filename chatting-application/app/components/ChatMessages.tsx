@@ -34,7 +34,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ item }) => {
       const receiverId = item?._id;
 
       const response = await axios.get<Message[]>(
-        'http://localhost:8000/messages',
+        'http://10.12.178.201:8000/messages',
         {
           params: { senderId, receiverId },
         }

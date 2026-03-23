@@ -1,7 +1,6 @@
 import { FontAwesome6, Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Chat from '../screens/Chat';
 import Chats from '../screens/Chats';
 import Peoples from '../screens/Peoples';
 import Profile from '../screens/Profile';
@@ -52,8 +51,8 @@ export default function AppNavigator() {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name={SCREENS.Chat}
-        component={Chat}
+        name={SCREENS.Chats}
+        component={Chats}
         options={{ headerShown: false }}
       />
       <Stack.Screen

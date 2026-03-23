@@ -1,11 +1,11 @@
 import 'core-js/stable/atob';
 import { useContext, useEffect, useState } from 'react';
 import {
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
+    Image,
+    Pressable,
+    StyleSheet,
+    Text,
+    View,
 } from 'react-native';
 
 import { AntDesign, Entypo, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
@@ -68,7 +68,7 @@ const Chats = () => {
   const getrequests = async () => {
     try {
       const response = await axios.get(
-        `http://10.114.23.208:6000/getrequests/${userId}`,
+        `http://10.12.178.201:6000/getrequests/${userId}`,
       );
 
       setRequests(response.data);
@@ -80,7 +80,7 @@ const Chats = () => {
 
   const acceptRequest = async requestId => {
     try {
-      const response = await axios.post('http://10.114.23.208:6000/acceptrequest', {
+      const response = await axios.post('http://10.12.178.201:6000/acceptrequest', {
         userId: userId,
         requestId: requestId,
       });
@@ -94,7 +94,7 @@ const Chats = () => {
   };
   const getUser = async () => {
     try {
-      const response = await axios.get(`http://10.114.23.208:6000/user/${userId}`);
+      const response = await axios.get(`http://10.12.178.201:6000/user/${userId}`);
       setChats(response.data);
     } catch (error) {
       console.log('Error fetching user', error);

@@ -13,6 +13,10 @@ import { navigate, replace } from '../utils/navigationService';
 import { SCREENS } from '../utils/routes';
 import { signupSchema } from '../utils/schemas/signupSchema';
 
+import { scale } from 'react-native-size-matters';
+import { COLORS } from '../utils/colors';
+
+
 export default function SignUp() {
   const { setToken } = useContext(AuthContext);
 
@@ -38,9 +42,9 @@ export default function SignUp() {
     navigate(SCREENS.Login);
   };
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data) => {
     try {
-      const response = await axios.post("http://10.114.23.208:6000/register", data);
+      const response = await axios.post("http://10.12.178.201:6000/register", data);
 
       const token = response.data.token;
       await AsyncStorage.setItem("authToken", token);

@@ -177,10 +177,6 @@ app.get('/user/:userId', async (req, res) => {
 const http = require('http').createServer(app);
 const io = require("socket.io")(http);
 
-const http = require('http').createServer(app);
-
-const io = require('socket.io')(http);
-
 //{"userId" : "socket ID"}
 
 const userSocketMap = {};
