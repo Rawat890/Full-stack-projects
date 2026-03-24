@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { useContext } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, View } from 'react-native';
+import { Alert, Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import ButtonWithLabel from '../components/ButtonWithLabel';
@@ -44,7 +44,7 @@ export default function SignUp() {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post("http://10.12.178.201:6000/register", data);
+      const response = await axios.post("http://192.168.29.24:6000/register", data);
 
       const token = response.data.token;
       await AsyncStorage.setItem("authToken", token);
