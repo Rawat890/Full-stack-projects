@@ -1,6 +1,7 @@
 import { FontAwesome6, Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ChatRoom from '../screens/ChatRoom';
 import Chats from '../screens/Chats';
 import Peoples from '../screens/Peoples';
 import Profile from '../screens/Profile';
@@ -63,6 +64,11 @@ export default function AppNavigator() {
       <Stack.Screen
         name={SCREENS.RequestChatRoom}
         component={RequestChatRoom}
+        options={{ headerShown: true }}
+      />
+      <Stack.Screen
+        name={SCREENS.ChatRoom}
+        component={ChatRoom}
         options={{ headerShown: true }}
       />
     </Stack.Navigator>
