@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Alert, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -14,13 +14,11 @@ import { replace } from '../utils/navigationService';
 import { SCREENS } from '../utils/routes';
 import { loginSchema } from '../utils/schemas/loginSchema';
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const { token, setToken } = useContext(AuthContext);
 
-  const {control, handleSubmit, formState: {errors}} = useForm({
+  const { control, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(loginSchema),
-    defaultValues :{
+    defaultValues: {
       email: '',
       password: ''
     }
@@ -35,87 +33,95 @@ export default function Login() {
     replace(SCREENS.Register);
   };
 
-  const onSubmit = async () => {
+  const onSubmit = async (data) => {
     const user = {
-      email: email,
-      password: password
-    }
-    axios.post("http://10.12.178.201:6000/login", user).then(async (response) => {
-      console.log("Backend response - ", response);
+      email: data.email,
+      password: data.password
+    };
+
+    try {
+      const response = await axios.post(
+        "http://192.168.29.24:6000/login",
+        user
+      );
+
       const token = response.data.token;
-      await AsyncStorage.setItem("authToken", token)
+
+      await AsyncStorage.setItem("authToken", token);
       setToken(token);
-      Alert.alert("User login successful")
-    }).catch((error) => {
-      Alert.alert("Error while login")
-      console.log(error)
-    })
-  }
 
-return (
-  <SafeAreaView style={{ flex: 1 }}>
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
-        keyboardShouldPersistTaps="handled"
+      Alert.alert("User login successful");
+    } catch (error) {
+      Alert.alert("Error while login");
+      console.log(error);
+    }
+  };
+
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <View style={styles.innerContainer}>
-          <Text style={styles.loginToAccountText}>
-            Login to Your Account
-          </Text>
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View style={styles.innerContainer}>
+            <Text style={styles.loginToAccountText}>
+              Login to Your Account
+            </Text>
 
-          <Controller
-            control={control}
-            name='email'
-            render={({ field: { onChange, value } }) => (
-              <InputWithLabel
-                label="Email"
-                value={email}
-                placeholder="Enter email"
-                onChangeText={setEmail}
-              />
-            )}
-          />
+            <Controller
+              control={control}
+              name='email'
+              render={({ field: { onChange, value } }) => (
+                <InputWithLabel
+                  label="Email"
+                  value={value}
+                  placeholder="Enter email"
+                  onChangeText={onChange}
+                  error={errors.email?.message}
+                />
+              )}
+            />
 
-          <Controller
-            control={control}
-            name="password"
-            render={({ field: { onChange, value } }) => (
-              <InputWithLabel
-                label="Password"
-                value={value}
-                placeholder="Enter password"
-                onChangeText={onChange}
-                secureTextEntry={true}
-                error={errors.password?.message}
-              />
-            )}
-          />
+            <Controller
+              control={control}
+              name="password"
+              render={({ field: { onChange, value } }) => (
+                <InputWithLabel
+                  label="Password"
+                  value={value}
+                  placeholder="Enter password"
+                  onChangeText={onChange}
+                  secureTextEntry={true}
+                  error={errors.password?.message}
+                />
+              )}
+            />
 
 
-          <Text style={styles.forgotPassword}>Forgot Password</Text>
+            <Text style={styles.forgotPassword}>Forgot Password</Text>
 
-          <View style={styles.buttonContainer}>
-            <ButtonWithLabel title="Login" onPress={handleSubmit(onSubmit)} />
+            <View style={styles.buttonContainer}>
+              <ButtonWithLabel title="Login" onPress={handleSubmit(onSubmit)} />
 
-            <View style={styles.doNotHaveAccount}>
-              <Text style={styles.doNotHaveAccountText}>
-                Don't have an account ?
-              </Text>
+              <View style={styles.doNotHaveAccount}>
+                <Text style={styles.doNotHaveAccountText}>
+                  Don't have an account ?
+                </Text>
 
-              <Pressable onPress={navigateToSignUp}>
-                <Text style={styles.signUpText}>Sign up</Text>
-              </Pressable>
+                <Pressable onPress={navigateToSignUp}>
+                  <Text style={styles.signUpText}>Sign up</Text>
+                </Pressable>
+              </View>
             </View>
           </View>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
-  </SafeAreaView>
-)
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
+  )
 }
 
 const styles = StyleSheet.create({
