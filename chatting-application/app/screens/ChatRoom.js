@@ -3,18 +3,19 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import axios from 'axios';
 import { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import {
-    KeyboardAvoidingView,
-    Pressable,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
+  KeyboardAvoidingView,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
 } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { AuthContext } from '../context/AuthContext';
 import { useSocketContext } from '../context/SocketContext';
 import { COLORS } from '../utils/colors';
+import { goBack } from '../utils/navigationService';
 
 const ChatRoom = () => {
   const navigation = useNavigation();
@@ -30,7 +31,7 @@ const ChatRoom = () => {
       headerTitle: '',
       headerLeft: () => (
         <View style={styles.headerView}>
-          <Ionicons name="arrow-back" size={24} color="black" />
+          <Ionicons name="arrow-back" size={24} color="black" onPress={goBack}/>
           <View>
             <Text>{route?.params?.name}</Text>
           </View>
@@ -57,7 +58,7 @@ const ChatRoom = () => {
   const sendMessage = async (senderId, receiverId) => {
     try {
       if (!message.trim()) return;
-      await axios.post('http://10.12.178.201:4000/sendMessage', {
+      await axios.post('http://192.168.29.24:6000/sendMessage', {
         senderId,
         receiverId,
         message,
@@ -79,7 +80,7 @@ const ChatRoom = () => {
       const senderId = userId;
       const receiverId = route?.params?.receiverId;
 
-      const response = await axios.get('http://10.12.178.201:4000/messages', {
+      const response = await axios.get('http://192.168.29.24:6000/messages', {
         params: { senderId, receiverId },
       });
 
