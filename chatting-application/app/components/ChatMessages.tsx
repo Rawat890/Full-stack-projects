@@ -4,6 +4,7 @@ import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import { AuthContext } from '../context/AuthContext';
 import { navigate } from '../utils/navigationService';
+import { SCREENS } from '../utils/routes';
 
 interface UserItem {
   _id: string;
@@ -34,7 +35,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ item }) => {
       const receiverId = item?._id;
 
       const response = await axios.get<Message[]>(
-        'http://10.12.178.201:8000/messages',
+        'http://192.168.29.24:6000/messages',
         {
           params: { senderId, receiverId },
         }
@@ -59,7 +60,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ item }) => {
   return (
     <Pressable
       onPress={() =>
-        navigate('ChatRoom', {
+        navigate(SCREENS.ChatRoom, {
           name: item?.name,
           receiverId: item?._id,
           image: item?.image,
