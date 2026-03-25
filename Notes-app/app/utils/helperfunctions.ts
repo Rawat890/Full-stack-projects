@@ -20,3 +20,18 @@ export const timeAgo = (dateString: string) => {
     month: "short",
   });
 };
+
+export function getFormattedDate() {
+  return new Date().toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+export function getDayProgress() {
+  const now = new Date();
+  const total = 24 * 60;
+  const elapsed = now.getHours() * 60 + now.getMinutes();
+  return elapsed / total;
+}
