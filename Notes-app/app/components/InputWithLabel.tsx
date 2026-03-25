@@ -8,6 +8,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
+import COLORS from '../utils/colors';
 
 interface InputWithLabelProps {
   label: string;
@@ -76,6 +77,7 @@ export default function InputWithLabel({
               textAlignVertical: 'top',
               padding: 0,
               fontSize: 16,
+              color: COLORS.white
             }}
           />
         </View>
