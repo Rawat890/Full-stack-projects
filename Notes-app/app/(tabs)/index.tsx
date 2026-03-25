@@ -70,6 +70,7 @@ export default function Notes() {
         data={notes}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderNote}
+        showsVerticalScrollIndicator={false}
       />
     </Screen>
   );
