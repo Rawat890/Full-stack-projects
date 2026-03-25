@@ -27,8 +27,11 @@ export const createNotes = async ({ title, content }: CreateNoteInput) => {
 };
 
 export const deleteNotes = async (id: number) => {
-  const { error } = await supabase.from("notes").delete().eq("id", 1);
+  const { error } = await supabase.from("notes").delete().eq("id", id);
+
   if (error) {
     throw new Error(error.message);
   }
+
+  return true;
 };
