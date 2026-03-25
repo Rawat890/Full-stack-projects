@@ -2,6 +2,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
+  ActivityIndicator,
+  Alert,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -12,11 +14,46 @@ import {
 import { scale } from 'react-native-size-matters';
 import InputWithLabel from '../components/InputWithLabel';
 import Screen from '../components/Screen';
+import { useCreateNote } from '../queries/notesQuery';
 import COLORS from '../utils/colors';
 
 export default function AddNotes() {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const { mutate: addNote, isPending } = useCreateNote();
+
+  const handleAddNote = () => {
+    if (!title.trim()) {
+      Alert.alert("Please enter the title of the note.");
+      return;
+    }
+    if (!content.trim()) {
+      Alert.alert("Please enter the content of the note.");
+      return;
+    }
+
+    addNote({
+      title, content
+    }, {
+      onSuccess: () => {
+        Alert.alert("Success 🔥", "Note added successfully.\nYou can check the note in notes screen.", [
+          {
+            text: "OK",
+            onPress: () => router.back(),
+          },
+        ]);
+      },
+
+      onError: (error) => {
+        console.log("Errror - ", error)
+        Alert.alert("Unable to add note. Please try again later.");
+      }
+    })
+
+    setContent("")
+    setTitle("")
+
+  }
 
   return (
     <Screen>
@@ -52,8 +89,15 @@ export default function AddNotes() {
           </View>
 
           <View style={styles.footer}>
-            <Pressable style={styles.saveButton}>
-              <Text style={styles.addNote}>Add Note</Text>
+            <Pressable style={styles.saveButton} onPress={handleAddNote}>
+              {
+                isPending ? (
+                  <ActivityIndicator size={'large'} color={'#A9A9A9'} />
+                ) : (
+                  <Text style={styles.addNote}>Add Note</Text>
+
+                )
+              }
             </Pressable>
           </View>
 
