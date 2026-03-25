@@ -72,6 +72,11 @@ export default function InputWithLabel({
             value={value}
             placeholder={placeholder}
             onChangeText={onChangeText}
+            style={{
+              textAlignVertical: 'top',
+              padding: 0,
+              fontSize: 16,
+            }}
           />
         </View>
 
