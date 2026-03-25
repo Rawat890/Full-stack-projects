@@ -1,7 +1,14 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { scale } from 'react-native-size-matters';
 import InputWithLabel from '../components/InputWithLabel';
 import Screen from '../components/Screen';
@@ -13,60 +20,90 @@ export default function AddNotes() {
 
   return (
     <Screen>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.addNotesText}>Add Notes</Text>
-          <Pressable onPress={() => { router.back() }}>
-            <MaterialIcons name="cancel" size={36} color="black" />
-          </Pressable>
-        </View>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <View style={styles.container}>
 
-        <View style={styles.inputContainer}>
-          <InputWithLabel
-            value={title}
-            onChangeText={setTitle}
-            label="Enter title"
-            labelStyle={styles.label}
-            inputContainerStyle={styles.input}
-          />
+          <View style={styles.header}>
+            <Text style={styles.addNotesText}>Add Notes</Text>
+            <Pressable onPress={() => router.back()}>
+              <MaterialIcons name="cancel" size={36} color="black" />
+            </Pressable>
+          </View>
 
-          <InputWithLabel
-            value={content}
-            onChangeText={setContent}
-            label="Enter content"
-            labelStyle={styles.label}
-            inputContainerStyle={[styles.input, styles.textArea]}
-          />
+          <View style={styles.inputContainer}>
+            <InputWithLabel
+              value={title}
+              onChangeText={setTitle}
+              label="Enter title"
+              labelStyle={styles.label}
+              inputContainerStyle={styles.input}
+            />
+
+            <InputWithLabel
+              value={content}
+              onChangeText={setContent}
+              label="Enter content"
+              labelStyle={styles.label}
+              inputContainerStyle={[styles.input, styles.textArea]}
+            />
+          </View>
+
+          <View style={styles.footer}>
+            <Pressable style={styles.saveButton}>
+              <Text style={styles.addNote}>Add Note</Text>
+            </Pressable>
+          </View>
+
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     marginHorizontal: scale(15),
   },
   inputContainer: {
     marginTop: scale(10),
   },
+  footer: {
+    marginTop: 'auto',
+  },
   label: {
     fontSize: scale(18),
+    marginTop: scale(5),
   },
   input: {
     backgroundColor: COLORS.offWhite,
-    height: scale(100),
-    elevation: 1
+    elevation: 1,
   },
   textArea: {
     minHeight: scale(200),
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   addNotesText: {
     fontSize: scale(26),
-    fontWeight: '700'
-  }
+    fontWeight: '700',
+  },
+  saveButton: {
+    padding: scale(15),
+    borderRadius: scale(10),
+    borderColor: COLORS.gray,
+    backgroundColor: COLORS.orange,
+    borderWidth: 1,
+  },
+  addNote: {
+    fontSize: scale(20),
+    fontWeight: '600',
+    color: COLORS.darkBlue,
+    textAlign: 'center',
+  },
 });
