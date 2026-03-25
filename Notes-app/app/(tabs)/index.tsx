@@ -1,10 +1,11 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import Screen from "../components/Screen";
+import { useNoteList } from '../queries/notesQuery';
 import COLORS from '../utils/colors';
-import notes from '../utils/dummyData';
+
 
 type Note = {
   id: number;
@@ -15,7 +16,16 @@ type Note = {
 
 export default function Notes() {
   const router = useRouter();
+  const { data: notes, error, isPending } = useNoteList();
 
+  if (isPending) {
+    return (
+      <Screen style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size={'large'} color={'#A9A9A9'} />
+        <Text>Loading data....</Text>
+      </Screen>
+    )
+  }
   const renderNote = ({ item }: { item: Note }) => {
     return (
       <View style={styles.noteView}>
@@ -37,13 +47,13 @@ export default function Notes() {
   return (
     <Screen style={{ marginHorizontal: 10, }}>
       <View style={styles.header}>
-      <Text style={styles.noteText}>Notes Screen</Text>
-            <Pressable onPress={navigateToAddNotes}>
-        <Image
-          source={require('../../assets/appImages/plus.png')}
-          style={styles.addButton}
-        />
-      </Pressable>
+        <Text style={styles.noteText}>Notes Screen</Text>
+        <Pressable onPress={navigateToAddNotes}>
+          <Image
+            source={require('../../assets/appImages/plus.png')}
+            style={styles.addButton}
+          />
+        </Pressable>
       </View>
 
       <FlatList
@@ -80,10 +90,10 @@ const styles = StyleSheet.create({
     width: scale(35),
     height: scale(35),
   },
-  header:{
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent:'space-between',
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginVertical: scale(15),
     marginHorizontal: scale(5)
   }
