@@ -39,3 +39,34 @@ const notes: Note[] = [
 ];
 
 export default notes;
+
+export const QUOTES = [
+  {
+    text: "The palest ink is better than the best memory.",
+    author: "Chinese Proverb",
+  },
+  {
+    text: "Fill your paper with the breathings of your heart.",
+    author: "William Wordsworth",
+  },
+  {
+    text: "A short pencil is better than a long memory.",
+    author: "Mark Twain",
+  },
+  { text: "Writing is thinking on paper.", author: "William Zinsser" },
+  { text: "Notebook: a place where chaos becomes story.", author: "Anonymous" },
+  {
+    text: "One must always have a notebook. Life goes by fast.",
+    author: "Nora Ephron",
+  },
+];
+
+export const TIPS = [
+  "📌 Pin your most important note to keep it at the top.",
+  "🔍 Use keywords in titles for faster search.",
+  "🏷️ Tag notes by project or mood to find them instantly.",
+  "✂️ Keep notes short — one idea per note works best.",
+  "🌙 Review your notes each evening to retain more.",
+];
+
+export const GREETINGS = ["Good morning", "Good afternoon", "Good evening"];
