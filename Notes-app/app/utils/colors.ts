@@ -37,6 +37,19 @@ const COLORS = {
   yellow: "#FFEB3B",
   teal: "#009688",
   orange: "#FFA500",
+  bg: "#0d0d0f",
+  surface: "#18181c",
+  text: "#f0eefc",
+  muted: "#7b7a8e",
+  accent: "#a78bfa",
+
+  surfaceHover: "#1e1e24",
+
+  accentSoft: "#a78bfa22",
+  dangerSoft: "#f8717118",
+  dim: "#3a3a46",
+  borderFocus: "#a78bfa",
+  inputBg: "#111115",
 };
 
 export default COLORS;
