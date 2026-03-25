@@ -7,15 +7,22 @@ export const getAllNotes = async () => {
   return data;
 };
 
-export const createNotes = async (title: string, content: string) => {
+export type CreateNoteInput = {
+  title: string;
+  content: string;
+};
+
+export const createNotes = async ({ title, content }: CreateNoteInput) => {
   const { data, error } = await supabase
     .from("notes")
-    .insert({ title, content })
+    .insert([{ title, content }])
     .select()
     .single();
+
   if (error) {
     throw new Error(error.message);
   }
+
   return data;
 };
 
