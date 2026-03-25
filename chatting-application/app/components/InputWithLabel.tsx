@@ -3,6 +3,7 @@
 import React, { useRef, useState } from 'react';
 import { Animated, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
+import { COLORS } from '../utils/colors';
 
 interface InputWithLabelProps {
   label: string,
@@ -51,6 +52,7 @@ const InputWithLabel: React.FC<InputWithLabelProps> = ({ label, placeholder, onC
           onBlur={handleBlur}
           placeholder={placeholder}
           style={styles.input}
+          placeholderTextColor={COLORS.white}
         />
         {
           secureTextEntry && (
@@ -74,9 +76,9 @@ const styles = StyleSheet.create({
   label: {
     fontSize: scale(14),
     marginBottom: scale(6),
-    fontWeight: "500"
+    fontWeight: "500",
+    color:COLORS.white
   },
-
   inputContainer: {
     borderWidth: 1,
     borderRadius: 8,
@@ -84,17 +86,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center"
   },
-
   input: {
     flex: 1,
-    height: 45
+    height: 45,
+    color: COLORS.white,
   },
-
   toggle: {
     color: "#4CAF50",
     fontWeight: "600"
   },
-
   error: {
     marginTop: 5,
     color: "red",
