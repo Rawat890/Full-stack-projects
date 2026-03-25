@@ -5,18 +5,20 @@ import { scale } from 'react-native-size-matters';
 import Screen from "../components/Screen";
 import { useNoteList } from '../queries/notesQuery';
 import COLORS from '../utils/colors';
+import { timeAgo } from '../utils/helperfunctions';
 
 
 type Note = {
   id: number;
   title: string;
   content: string;
-  date: string;
+  created_at: string;
 };
 
 export default function Notes() {
   const router = useRouter();
   const { data: notes, error, isPending } = useNoteList();
+  console.log("Data - ", notes)
 
   if (isPending) {
     return (
@@ -31,8 +33,16 @@ export default function Notes() {
       <View style={styles.noteView}>
         <View style={styles.noteInnerView}>
           <Text style={styles.itemTitle}>{item.title}</Text>
-          <Text>{item.content}</Text>
-          <Text style={{ fontSize: 12, color: 'gray' }}>{item.date}</Text>
+          <Text style={styles.content}>{item.content}</Text>
+          <Text style={{ fontSize: 12, color: 'gray' }}>
+            {new Date(item.created_at).toLocaleString('en-IN', {
+              dateStyle: 'medium',
+              timeStyle: 'short',
+            })}
+          </Text>
+          <Text style={styles.timeAgo}>
+            ({timeAgo(item.created_at)})
+          </Text>
         </View>
         <MaterialIcons name="delete-sweep" size={36} color={COLORS.danger} />
       </View>
@@ -75,7 +85,6 @@ const styles = StyleSheet.create({
     height: scale(100),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
   },
   noteInnerView: {},
   itemTitle: {
@@ -96,5 +105,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginVertical: scale(15),
     marginHorizontal: scale(5)
+  },
+  timeAgo: { 
+    fontSize: scale(11), 
+    color: COLORS.darkGray 
+  },
+  content:{
+    fontSize: scale(14)
   }
 })
