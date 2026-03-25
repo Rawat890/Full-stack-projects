@@ -1,6 +1,5 @@
 import supabase from "./supabase";
-
-const getAllNotes = async () => {
+export const getAllNotes = async () => {
   const { data, error } = await supabase.from("notes").select("*");
   if (error) {
     throw new Error(error.message);
@@ -8,9 +7,9 @@ const getAllNotes = async () => {
   return data;
 };
 
-const createNotes = async (title: string, content: string) => {
+export const createNotes = async (title: string, content: string) => {
   const { data, error } = await supabase
-    .from("countries")
+    .from("notes")
     .insert({ title, content })
     .select()
     .single();
@@ -20,11 +19,9 @@ const createNotes = async (title: string, content: string) => {
   return data;
 };
 
-const deleteNotes = async (id: number) => {
+export const deleteNotes = async (id: number) => {
   const { error } = await supabase.from("notes").delete().eq("id", 1);
   if (error) {
     throw new Error(error.message);
   }
 };
-
-export default { createNotes, getAllNotes, deleteNotes };
