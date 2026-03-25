@@ -36,6 +36,7 @@ const COLORS = {
   pink: "#E91E63",
   yellow: "#FFEB3B",
   teal: "#009688",
+  orange: "#FFA500",
 };
 
 export default COLORS;
