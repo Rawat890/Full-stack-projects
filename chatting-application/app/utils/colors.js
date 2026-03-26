@@ -20,5 +20,18 @@ export const COLORS = {
   background: "#F5F5F5",
   border: "#E0E0E0",
 
-  transparent: "transparent"
+  transparent: "transparent",
+  bg: '#0d0d0f',
+  surface: '#16161a',
+  surfaceAlt: '#1c1c22',
+  accent: '#a78bfa',
+  accentSoft: '#a78bfa18',
+  text: '#f0eefc',
+  muted: '#6b6a7e',
+  dim: '#3a3a46',
+  danger: '#f87171',
+  dangerSoft: '#f8717115',
+  greenSoft: '#34d39918',
+  orangeSoft: '#fb923c18',
+  blueSoft: '#60a5fa18',
 };
