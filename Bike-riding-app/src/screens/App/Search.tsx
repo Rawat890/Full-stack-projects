@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from "react";
 import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { scale } from 'react-native-size-matters';
 
-const GEOAPIFY_API_KEY = '8064243326894715a0b7f666e7989857'
+const GEOAPIFY_API_KEY = ''
 
 const Search = () => {
 
