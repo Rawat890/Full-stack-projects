@@ -16,3 +16,5 @@ const RootNavigator = () => {
         </NavigationContainer>
     )
 }
+
+export default RootNavigator;
