@@ -9,10 +9,10 @@ const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{headerShown: false}}>
             <Stack.Screen name={SCREENS.Home} component={Home} />
             <Stack.Screen name={SCREENS.SelectRide} component={SelectRide} />
-            <Stack.Screen name={SCREENS.SelectRide} component={Search} />
+            <Stack.Screen name={SCREENS.Search} component={Search} />
         </Stack.Navigator>
     )
 }
