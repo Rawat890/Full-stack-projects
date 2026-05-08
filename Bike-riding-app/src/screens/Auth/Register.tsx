@@ -3,6 +3,8 @@ import AnimatedInput from "@/src/components/AnimatedInput";
 import { COLORS } from "@/src/utils/colors";
 import { fonts } from "@/src/utils/fonts";
 import { registerImage } from "@/src/utils/images";
+import { navigate } from "@/src/utils/navigationService";
+import { SCREENS } from "@/src/utils/routes";
 import { useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { scale } from "react-native-size-matters";
@@ -13,7 +15,7 @@ const Register = () => {
     const [password, setPasword] = useState<string>("");
     return (
         <View style={styles.container}>
-            <View style={{ alignItems: 'center', marginTop: scale(30) }}>
+            <View style={{ alignItems: 'center', marginTop: scale(50) }}>
                 <Text style={styles.headerText}>Welcome to rapido</Text>
 
                 <Text style={styles.descriptionText}>Easy rides, anytime, anywhere</Text>
@@ -24,8 +26,8 @@ const Register = () => {
             </View>
             <View style={styles.inputView}>
                 <AnimatedInput
-                    label="Email"
-                    placeholder="Enter your email"
+                    label="Name"
+                    placeholder="Enter your name"
                     inputContainerStyle={styles.inputContainer}
                     value={name}
                     onChangeText={setName}
@@ -33,13 +35,13 @@ const Register = () => {
                     textStyle={styles.inputText}
                 />
                 <AnimatedInput
-                    label="Password"
-                    placeholder="Enter your password"
+                    label="Email"
+                    placeholder="Enter your email"
                     inputContainerStyle={styles.inputContainer}
                     labelStyle={styles.label}
                     textStyle={styles.inputText}
-                    value={password}
-                    onChangeText={setPasword}
+                    value={email}
+                    onChangeText={setEmail}
                 />
                 <AnimatedInput
                     label="Password"
@@ -58,13 +60,13 @@ const Register = () => {
                 onPress={() => { }}
             />
 
-            <View style={{ alignItems: 'center', marginTop: scale(10) }}>
+            <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent:'center', marginTop: scale(5)}}>
                 <Text style={styles.noAccountText}>
                     Already have an account.
-                    <Pressable>
-                        <Text style={styles.signUpText}>Sign in</Text>
-                    </Pressable>
                 </Text>
+                    <Pressable onPress={()=>navigate(SCREENS.login)}>
+                        <Text style={styles.signUpText}> Sign in</Text>
+                    </Pressable>
             </View>
         </View>
     )
@@ -89,8 +91,8 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         borderWidth: 2,
-        padding: scale(10),
-        marginHorizontal: scale(20)
+        padding: scale(5),
+        marginHorizontal: scale(30)
     },
     button: {
         padding: scale(10),
@@ -100,7 +102,7 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         fontFamily: fonts.notoSemi,
-        fontSize: scale(20),
+        fontSize: scale(16),
         textAlign: "center",
         color: COLORS.white
     },
@@ -116,20 +118,20 @@ const styles = StyleSheet.create({
         color: COLORS.darkGrey
     },
     image: {
-        width: scale(240),
-        height: scale(240),
+        width: scale(220),
+        height: scale(220),
     },
     inputView: {
-        marginTop: scale(40),
+        marginTop: scale(5),
         alignItems: 'center'
     },
     noAccountText: {
         fontFamily: fonts.notoSemi,
-        fontSize: scale(16),
+        fontSize: scale(14),
     },
     signUpText: {
         fontFamily: fonts.notoSemi,
-        fontSize: scale(16),
+        fontSize: scale(14),
         color: COLORS.primary,
     }
 })

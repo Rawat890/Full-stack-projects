@@ -3,6 +3,8 @@ import AnimatedInput from "@/src/components/AnimatedInput";
 import { COLORS } from "@/src/utils/colors";
 import { fonts } from "@/src/utils/fonts";
 import { loginImage } from "@/src/utils/images";
+import { navigate } from "@/src/utils/navigationService";
+import { SCREENS } from "@/src/utils/routes";
 import { useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { scale } from "react-native-size-matters";
@@ -10,9 +12,15 @@ import { scale } from "react-native-size-matters";
 const Login = () => {
     const [email, setEmail] = useState<string>("");
     const [password, setPasword] = useState<string>("");
+
+    const handleLogin = () => {
+
+    }
+
+
     return (
         <View style={styles.container}>
-            <View style={{ alignItems: 'center', marginTop: scale(30) }}>
+            <View style={{ alignItems: 'center', marginTop: scale(50) }}>
                 <Text style={styles.headerText}>Welcome to rapido</Text>
 
                 <Text style={styles.descriptionText}>Covenient rides, Anytime, Anywhere</Text>
@@ -40,21 +48,24 @@ const Login = () => {
                     value={password}
                     onChangeText={setPasword}
                 />
+                <Pressable style={{alignSelf: 'flex-end', marginRight: scale(24), marginTop: scale(-15)}} onPress={()=>navigate(SCREENS.ForgotPassword)}>
+                    <Text style={styles.forgotPasswordText}>Forgot Password</Text>
+                </Pressable>
             </View>
             <AnimatedButton
-                title="Register"
+                title="Login to rapido"
                 inputContainerStyle={styles.button}
                 titleStyle={styles.buttonText}
                 onPress={() => { }}
             />
 
-            <View style={{ alignItems: 'center', marginTop: scale(10) }}>
+            <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'center', marginTop: scale(5) }}>
                 <Text style={styles.noAccountText}>
                     Don't have an account?
-                    <Pressable>
-                        <Text style={styles.signUpText}>Sign Up</Text>
-                    </Pressable>
                 </Text>
+                <Pressable onPress={() => navigate(SCREENS.Register)}>
+                    <Text style={styles.signUpText}> Sign Up</Text>
+                </Pressable>
             </View>
         </View>
     )
@@ -79,18 +90,19 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         borderWidth: 2,
-        padding: scale(10),
+        padding: scale(5),
         marginHorizontal: scale(20)
     },
     button: {
         padding: scale(10),
-        marginHorizontal: scale(40),
+        marginHorizontal: scale(20),
         borderRadius: scale(10),
+        marginTop: scale(18),
         backgroundColor: COLORS.primary
     },
     buttonText: {
-        fontFamily: fonts.notoSemi,
-        fontSize: scale(20),
+        fontFamily: fonts.notoBold,
+        fontSize: scale(16),
         textAlign: "center",
         color: COLORS.white
     },
@@ -115,12 +127,19 @@ const styles = StyleSheet.create({
     },
     noAccountText: {
         fontFamily: fonts.notoSemi,
-        fontSize: scale(16),
+        fontSize: scale(14),
     },
     signUpText: {
         fontFamily: fonts.notoSemi,
-        fontSize: scale(16),
+        fontSize: scale(14),
         color: COLORS.primary,
+    },
+    forgotPasswordText: {
+        fontFamily: fonts.notoSemi,
+        fontSize: scale(12),
+        color: COLORS.primary,
+        textAlign: 'right',
+        textDecorationLine:'underline'
     }
 })
 
