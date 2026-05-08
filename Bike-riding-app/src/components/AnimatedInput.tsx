@@ -102,7 +102,6 @@ const styles = StyleSheet.create({
     top: -scale(11),
     left: scale(14),
     backgroundColor: COLORS.white,
-    paddingHorizontal: scale(4),
   },
   label: {
     fontSize: scale(13),
