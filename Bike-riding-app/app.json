@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Bike-riding-app",
-    "slug": "Bike-riding-app",
+    "name": "Rapido-booking-app",
+    "slug": "Rapido-booking-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -37,6 +37,15 @@
           "dark": {
             "backgroundColor": "#000000"
           }
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(APPNAME) to use your location.",
+          "locationWhenInUsePermission": "Allow $(APPNAME) to use your location.",
+          "isIosBackgroundLocationEnabled": false,
+          "isAndroidBackgroundLocationEnabled": false
         }
       ]
     ],
