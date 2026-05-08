@@ -1,7 +1,7 @@
 export const SCREENS = {
-    root: '/',
     login : "Login",
     Register: "Register",
+    ForgotPassword: "ForgotPassword",
     Home: "Home",
     RideDetails: "RideDetails",
     Search: "Search",
