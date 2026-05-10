@@ -1,22 +1,32 @@
 import AnimatedButton from "@/src/components/AnimatedButton";
 import AnimatedInput from "@/src/components/AnimatedInput";
+import { useAuth } from "@/src/context/AuthContext";
 import { COLORS } from "@/src/utils/colors";
 import { fonts } from "@/src/utils/fonts";
 import { loginImage } from "@/src/utils/images";
 import { navigate } from "@/src/utils/navigationService";
 import { SCREENS } from "@/src/utils/routes";
 import { useState } from "react";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Alert, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { scale } from "react-native-size-matters";
 
 const Login = () => {
     const [email, setEmail] = useState<string>("");
     const [password, setPasword] = useState<string>("");
+    const { login } = useAuth();
+    const handleLogin = async () => {
+        if (!email || !password) {
+            Alert.alert("Please enter email and password")
+        }
+        try {
+            await login(email, password);
+            Alert.alert("User signed in successfully")
 
-    const handleLogin = () => {
-
+        } catch (error) {
+            Alert.alert("Error while signing in.")
+            console.log(error)
+        }
     }
-
 
     return (
         <View style={styles.container}>
@@ -48,7 +58,7 @@ const Login = () => {
                     value={password}
                     onChangeText={setPasword}
                 />
-                <Pressable style={{alignSelf: 'flex-end', marginRight: scale(24), marginTop: scale(-15)}} onPress={()=>navigate(SCREENS.ForgotPassword)}>
+                <Pressable style={{ alignSelf: 'flex-end', marginRight: scale(24), marginTop: scale(-15) }} onPress={() => navigate(SCREENS.ForgotPassword)}>
                     <Text style={styles.forgotPasswordText}>Forgot Password</Text>
                 </Pressable>
             </View>
@@ -56,7 +66,7 @@ const Login = () => {
                 title="Login to rapido"
                 inputContainerStyle={styles.button}
                 titleStyle={styles.buttonText}
-                onPress={() => { }}
+                onPress={handleLogin}
             />
 
             <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'center', marginTop: scale(5) }}>
@@ -139,7 +149,7 @@ const styles = StyleSheet.create({
         fontSize: scale(12),
         color: COLORS.primary,
         textAlign: 'right',
-        textDecorationLine:'underline'
+        textDecorationLine: 'underline'
     }
 })
 
