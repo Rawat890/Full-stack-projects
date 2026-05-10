@@ -6,39 +6,33 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-
-const UserZodSchema = require('./models/user.model')
-const User = require('./models/user.model')
+const { User, UserZodSchema } = require('./models/user.model');
 
 app.use(cors({
-  origin: ['http://localhost:19006', 'http://localhost:3000'],
+  origin: ['http://10.169.128.7:19006', 'http://10.169.128.7:3000'],
   methods: ['GET', 'POST', 'PATCH', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
-}))
+}));
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} ${JSON.stringify(req.body)}`)
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} ${JSON.stringify(req.body)}`);
   next();
-})
+});
 
-app.post('/api/register', async (req, res) => {
+app.post('/api/login', async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
 
     if (!user || user.password !== password) {
-      res.status(401).json({
-        message: "Invalid credentials"
-      })
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    await newUser.save();
-    const token = jwt.sign({ id: user._id, email }, process.env.JWT_SECRET_KEY)
-    res.status(201).json({
-      message: "user logged in successfully",
+    const token = jwt.sign({ id: user._id, email }, process.env.JWT_SECRET_KEY);
+    return res.status(200).json({
+      message: "User logged in successfully",
       token,
-      userId: user._id,
       user: {
         id: user._id,
         email: user.email,
@@ -46,49 +40,50 @@ app.post('/api/register', async (req, res) => {
         location: user.location,
         ridesDone: user.ridesDone
       }
-    })
+    });
   } catch (error) {
     console.log(error);
-    res.status(400).json({
-      message: "Error while registering user."
-    })
+    return res.status(400).json({ message: "Error while logging in." });
   }
-})
+});
 
-app.post('/api/login', async (req, res) => {
+app.post('/api/register', async (req, res) => {
   try {
     const validationData = UserZodSchema.parse(req.body);
     const { email, password, phone, location } = validationData;
 
-    const existingUser = await UserZodSchema.User.findOne({ email });
+    const existingUser = await User.findOne({ email }); // ✅ fixed
     if (existingUser) {
-      res.status(400).json({
-        message: "user already exists in database"
-      })
+      return res.status(400).json({ message: "User already exists in database" }); // ✅ return added
     }
 
     const newUser = new User({
       email,
-      passowrd,
+      password,
       phone,
       profilePic: validationData.profilePic || '',
       location,
       ridesDone: validationData.ridesDone
-    })
+    });
 
     await newUser.save();
-    const token = jwt.sign({ id: newUser._id, email }, process.env.JWT_SECRET_KEY)
-    res.status(201).json({
-      message: "user registered successfully in backend",
+    const token = jwt.sign({ id: newUser._id, email }, process.env.JWT_SECRET_KEY);
+
+    return res.status(201).json({
+      message: "User registered successfully",
       token,
-      userId: newUser._id
-    })
+      user: {                   // ✅ user object added
+        id: newUser._id,
+        email: newUser.email,
+        phone: newUser.phone,
+        location: newUser.location,
+        ridesDone: newUser.ridesDone
+      }
+    });
   } catch (error) {
     console.log(error);
-    res.status(400).json({
-      message: "Error while registering user."
-    })
+    return res.status(400).json({ message: "Error while registering user." });
   }
-})
+});
 
 module.exports = app;
