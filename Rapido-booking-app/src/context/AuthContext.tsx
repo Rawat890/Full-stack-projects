@@ -25,7 +25,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const api = axios.create({
-  baseURL: "http://localhost:3000/api"
+  baseURL: "http://10.169.128.7:3000/api"
 })
 
 api.interceptors.request.use(
@@ -83,7 +83,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         throw new Error("User data not found")
       }
     },
-    onError: (error) => Logger.error("Registration failed", error)
+    onError: (error: any) => {
+      console.log(
+        "BACKEND ERROR:",
+        error?.response?.data
+      );
+    }
   });
 
   const loginMutation = useMutation({
