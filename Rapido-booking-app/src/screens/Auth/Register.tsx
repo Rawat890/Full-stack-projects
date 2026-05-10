@@ -13,20 +13,21 @@ import { scale } from "react-native-size-matters";
 const Register = () => {
     const [phone, setPhone] = useState<string>("");
     const [email, setEmail] = useState<string>("");
-    const [password, setPasword] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
 
     const { register } = useAuth();
 
     const handleRegister = async () => {
         if (!email || !password) {
             Alert.alert("Please enter email and password")
+            return;
         }
         try {
             await register(email, password, phone);
-            Alert.alert("User signed in successfully")
+            Alert.alert("User sign up successfull")
 
         } catch (error) {
-            Alert.alert("Error while signing in.")
+            Alert.alert("Error while sining up.")
             console.log(error)
         }
     }
@@ -58,7 +59,7 @@ const Register = () => {
                     labelStyle={styles.label}
                     textStyle={styles.inputText}
                     value={password}
-                    onChangeText={setPasword}
+                    onChangeText={setPassword}
                 />
             </View>
             <AnimatedInput
@@ -71,7 +72,7 @@ const Register = () => {
                 textStyle={styles.inputText}
             />
             <AnimatedButton
-                title="Sign in to rapido"
+                title="Sign up to rapido"
                 inputContainerStyle={styles.button}
                 titleStyle={styles.buttonText}
                 onPress={handleRegister}
