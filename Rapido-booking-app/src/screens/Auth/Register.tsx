@@ -1,18 +1,35 @@
 import AnimatedButton from "@/src/components/AnimatedButton";
 import AnimatedInput from "@/src/components/AnimatedInput";
+import { useAuth } from "@/src/context/AuthContext";
 import { COLORS } from "@/src/utils/colors";
 import { fonts } from "@/src/utils/fonts";
 import { registerImage } from "@/src/utils/images";
 import { navigate } from "@/src/utils/navigationService";
 import { SCREENS } from "@/src/utils/routes";
 import { useState } from "react";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Alert, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { scale } from "react-native-size-matters";
 
 const Register = () => {
-    const [name, setName] = useState<string>("");
+    const [phone, setPhone] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPasword] = useState<string>("");
+
+    const { register } = useAuth();
+
+    const handleRegister = async () => {
+        if (!email || !password) {
+            Alert.alert("Please enter email and password")
+        }
+        try {
+            await register(email, password, phone);
+            Alert.alert("User signed in successfully")
+
+        } catch (error) {
+            Alert.alert("Error while signing in.")
+            console.log(error)
+        }
+    }
     return (
         <View style={styles.container}>
             <View style={{ alignItems: 'center', marginTop: scale(50) }}>
@@ -25,15 +42,6 @@ const Register = () => {
                 />
             </View>
             <View style={styles.inputView}>
-                <AnimatedInput
-                    label="Name"
-                    placeholder="Enter your name"
-                    inputContainerStyle={styles.inputContainer}
-                    value={name}
-                    onChangeText={setName}
-                    labelStyle={styles.label}
-                    textStyle={styles.inputText}
-                />
                 <AnimatedInput
                     label="Email"
                     placeholder="Enter your email"
@@ -53,20 +61,29 @@ const Register = () => {
                     onChangeText={setPasword}
                 />
             </View>
+            <AnimatedInput
+                label="Mobile Number"
+                placeholder="Enter mobile number"
+                inputContainerStyle={styles.inputContainer}
+                value={phone}
+                onChangeText={setPhone}
+                labelStyle={styles.label}
+                textStyle={styles.inputText}
+            />
             <AnimatedButton
                 title="Sign in to rapido"
                 inputContainerStyle={styles.button}
                 titleStyle={styles.buttonText}
-                onPress={() => { }}
+                onPress={handleRegister}
             />
 
-            <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent:'center', marginTop: scale(5)}}>
+            <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'center', marginTop: scale(5) }}>
                 <Text style={styles.noAccountText}>
                     Already have an account.
                 </Text>
-                    <Pressable onPress={()=>navigate(SCREENS.login)}>
-                        <Text style={styles.signUpText}> Sign in</Text>
-                    </Pressable>
+                <Pressable onPress={() => navigate(SCREENS.login)}>
+                    <Text style={styles.signUpText}> Sign in</Text>
+                </Pressable>
             </View>
         </View>
     )
