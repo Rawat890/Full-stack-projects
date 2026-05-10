@@ -22,7 +22,7 @@ const locationSchema = new mongoose.Schema({
   address: { type: String, required: false }
 })
 
-const userSchema = new mmongoose.Schema({
+const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
