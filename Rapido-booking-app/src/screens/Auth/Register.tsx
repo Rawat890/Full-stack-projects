@@ -1,5 +1,6 @@
 import AnimatedButton from "@/src/components/AnimatedButton";
 import AnimatedInput from "@/src/components/AnimatedInput";
+import AnimatedLoader from "@/src/components/AnimatedLoader";
 import { useAuth } from "@/src/context/AuthContext";
 import { COLORS } from "@/src/utils/colors";
 import { fonts } from "@/src/utils/fonts";
@@ -14,6 +15,7 @@ const Register = () => {
     const [phone, setPhone] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(false);
 
     const { register } = useAuth();
 
@@ -23,16 +25,21 @@ const Register = () => {
             return;
         }
         try {
+            setLoading(true);
             await register(email, password, phone);
             Alert.alert("User sign up successfull")
 
         } catch (error) {
             Alert.alert("Error while sining up.")
             console.log(error)
+        }finally{
+            setLoading(false);
         }
     }
     return (
         <View style={styles.container}>
+            <AnimatedLoader visible={loading} message="Creating your account..." />
+
             <View style={{ alignItems: 'center', marginTop: scale(50) }}>
                 <Text style={styles.headerText}>Welcome to rapido</Text>
 
