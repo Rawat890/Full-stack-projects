@@ -1,5 +1,6 @@
 import AnimatedButton from "@/src/components/AnimatedButton";
 import AnimatedInput from "@/src/components/AnimatedInput";
+import AnimatedLoader from "@/src/components/AnimatedLoader";
 import { useAuth } from "@/src/context/AuthContext";
 import { COLORS } from "@/src/utils/colors";
 import { fonts } from "@/src/utils/fonts";
@@ -13,23 +14,30 @@ import { scale } from "react-native-size-matters";
 const Login = () => {
     const [email, setEmail] = useState<string>("");
     const [password, setPasword] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(false);
+
     const { login } = useAuth();
     const handleLogin = async () => {
         if (!email || !password) {
             Alert.alert("Please enter email and password")
         }
         try {
+            setLoading(true);
             await login(email, password);
             Alert.alert("User signed in successfully")
 
         } catch (error) {
             Alert.alert("Error while signing in.")
             console.log(error)
+        } finally {
+            setLoading(false);
         }
     }
 
     return (
         <View style={styles.container}>
+            <AnimatedLoader visible={loading} message="Signing you in..." />
+
             <View style={{ alignItems: 'center', marginTop: scale(50) }}>
                 <Text style={styles.headerText}>Welcome to rapido</Text>
 
