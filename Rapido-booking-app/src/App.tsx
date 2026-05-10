@@ -1,8 +1,11 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { AuthProvider } from './context/AuthContext';
 import RootNavigator from './navigation/RootNavigator';
 import { fonts } from './utils/fonts';
 
+const queryClient = new QueryClient();
 function App() {
 
     const [loaded] = useFonts({
@@ -15,13 +18,17 @@ function App() {
     if (!loaded) {
         return null;
     }
-    
+
     return (
-        <SafeAreaProvider>
-            <SafeAreaView style={{flex:1}} edges={['top','bottom']}>
-                <RootNavigator/>
-            </SafeAreaView>
-        </SafeAreaProvider>
+        <QueryClientProvider client={queryClient}>
+            <AuthProvider>
+                <SafeAreaProvider>
+                    <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
+                        <RootNavigator />
+                    </SafeAreaView>
+                </SafeAreaProvider>
+            </AuthProvider>
+        </QueryClientProvider>
     )
 }
 
